@@ -1,0 +1,13 @@
+{
+  "medium_threshold": 25,
+  "high_threshold": 50,
+  "critical_threshold": 75,
+  "decay_points": 10,
+  "decay_interval_seconds": 300,
+  "normal_points": 5,
+  "normal_quiet_seconds": 300,
+  "normal_cooldown_seconds": 300,
+  "block_seconds": 300,
+  "incident_quiet_seconds": 600,
+  "incident_context_seconds": 60
+}

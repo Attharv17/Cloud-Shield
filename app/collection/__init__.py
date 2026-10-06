@@ -21,7 +21,7 @@ def finish_request(response):
         "default-src 'self'; style-src 'self'; script-src 'self'; "
         "object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
     )
-    if request.endpoint == "static" or request.endpoint == "main.health":
+    if request.endpoint in {"static", "main.health", "main.ready"}:
         return response
     response.headers["Cache-Control"] = "no-store"
     user = getattr(g, "user", None)
@@ -38,7 +38,12 @@ def finish_request(response):
         "status": response.status_code,
         "metadata": {
             "authenticated": user is not None,
-            "rate_eligible": request.endpoint not in {"main.admin", "api.events", "api.overview"},
+            "rate_eligible": g.event_type != "request_blocked" and not (
+                request.endpoint in {"main.admin", "main.findings", "main.finding_detail"}
+                or request.blueprint in {"api", "risk_views", "dashboard"}
+            ),
+            "restricted_access": getattr(g, "restricted_access", False),
+            **({"device_fingerprint": g.device_fingerprint} if g.event_type == "login_success" else {}),
         },
     })
     return response

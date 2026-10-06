@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Risk & incidents · CloudShield{% endblock %}
+{% block content %}
+<p class="eyebrow">ADMINISTRATOR / RESPONSE</p><h1>Risk & incidents</h1>
+<p class="lead">Current scores, explainable changes, and the actions protecting this application.</p>
+<div class="metrics">{% for label, value in summary.items() %}<div><span>{{ label.replace('_', ' ')|title }}</span><strong>{{ value }}</strong></div>{% endfor %}</div>
+<section class="panel table-panel"><div class="table-heading"><h2>Risk entities</h2><a href="{{ url_for('risk_views.dashboard') }}">Refresh</a></div>
+<div class="table-scroll"><table><thead><tr><th>Entity</th><th>Score</th><th>Severity</th><th>Recommended response</th></tr></thead><tbody>
+{% for entity in entities %}<tr><td><a href="{{ url_for('risk_views.entity_page', entity_id=entity.id) }}">{{ entity.entity_type }}: {{ entity.entity_key }}</a></td><td>{{ entity.score }}/100</td><td>{{ entity.severity|upper }}</td><td>{{ entity.recommendation }}</td></tr>{% else %}<tr><td colspan="4">No entities yet.</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="panel table-panel"><div class="table-heading"><h2>Incidents</h2></div><div class="table-scroll"><table><thead><tr><th>Incident</th><th>Source</th><th>Status</th><th>Peak / Current</th></tr></thead><tbody>
+{% for incident in incidents %}<tr><td><a href="{{ url_for('risk_views.incident_page', incident_id=incident.id) }}">CS-{{ incident.id }}</a></td><td>{{ incident.source_ip }}</td><td>{{ incident.status }}</td><td>{{ incident.peak_score }} / {{ incident.current_score }}</td></tr>{% else %}<tr><td colspan="4">No incidents yet.</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="panel table-panel"><div class="table-heading"><h2>Alerts</h2></div><div class="table-scroll"><table><thead><tr><th>Alert</th><th>Entity</th><th>Reason</th><th>Acknowledgement</th></tr></thead><tbody>
+{% for alert in alerts %}<tr><td>#{{ alert.id }}</td><td><a href="{{ url_for('risk_views.entity_page', entity_id=alert.entity_id) }}">{{ alert.entity_id }}</a></td><td>{{ alert.reason }}</td><td>{% if alert.acknowledged_at %}Acknowledged{% else %}<form method="post" action="{{ url_for('risk_views.acknowledge_page', alert_id=alert.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="button secondary" type="submit">Acknowledge</button></form>{% endif %}</td></tr>{% else %}<tr><td colspan="4">No high or critical alerts.</td></tr>{% endfor %}</tbody></table></div></section>
+<div class="pagination">{% if page > 1 %}<a href="{{ url_for('risk_views.dashboard', page=page-1) }}">Previous</a>{% endif %}<span>Page {{ page }}</span>{% if entities|length == 25 or incidents|length == 25 or alerts|length == 25 %}<a href="{{ url_for('risk_views.dashboard', page=page+1) }}">Next</a>{% endif %}</div>
+{% endblock %}

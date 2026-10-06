@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Investigate · CloudShield{% endblock %}
+{% block content %}
+<p class="eyebrow">SECURITY OPERATIONS / INVESTIGATION</p><h1>Follow the evidence.</h1>
+<nav class="tabs" aria-label="Investigation types">{% for kind in kinds %}<a class="{{ 'selected' if result.kind==kind }}" href="/admin/investigate?kind={{ kind }}" {{ 'aria-current=page' if result.kind==kind }}>{{ kind|title }}</a>{% endfor %}</nav>
+<form class="filter-form" method="get" action="/admin/investigate"><input type="hidden" name="kind" value="{{ result.kind }}"><div><label for="q">Search IP, user or context</label><input id="q" name="q" value="{{ result.query }}" maxlength="100" placeholder="e.g. 192.0.2.10"></div><div><label for="state">Filter</label><select id="state" name="state"><option value="">All {{ result.kind }}</option>{% for state in kinds[result.kind] %}<option value="{{ state }}" {{ 'selected' if result.state==state }}>{{ state.replace('_',' ')|title }}</option>{% endfor %}</select></div><button class="button primary" type="submit">Apply filters</button><a href="/admin/investigate?kind={{ result.kind }}">Clear</a></form>
+<p class="muted">{{ result.total }} matching {{ result.kind }} · Page {{ result.page }}</p>
+<section class="panel table-panel"><div class="table-scroll"><table><thead><tr><th>ID</th><th>Entity / source</th><th>Status / type</th><th>Details</th></tr></thead><tbody>
+{% for item in result.records %}<tr>
+{% if result.kind=='entities' %}<td><a href="/admin/entities/{{ item.id }}">#{{ item.id }}</a></td><td>{{ item.username or item.entity_key }}</td><td>{{ item.severity|upper }}</td><td>{{ item.score }}/100 · {{ item.entity_type }}</td>
+{% elif result.kind=='incidents' %}<td><a href="/admin/incidents/{{ item.id }}">CS-{{ item.id }}</a></td><td>{{ item.source_ip }}</td><td>{{ item.status }}</td><td>Peak {{ item.peak_score }}/100 · {{ item.opened_at }}</td>
+{% elif result.kind=='findings' %}<td><a href="/admin/findings/{{ item.id }}">#{{ item.id }}</a></td><td>{{ item.source_ip }} · {{ item.username or 'Anonymous' }}</td><td>{{ item.rule_id.replace('_',' ') }}</td><td>{{ item.reason }} (+{{ item.weight }})</td>
+{% elif result.kind=='events' %}<td>#{{ item.id }}</td><td>{{ item.source_ip }} · {{ item.username or 'Anonymous' }}</td><td>{{ item.event_type.replace('_',' ') }}</td><td>{{ item.method }} {{ item.route }} · {{ item.status }} · {{ item.timestamp }}</td>
+{% else %}<td><a href="/admin/entities/{{ item.entity_id }}">Alert #{{ item.id }}</a></td><td>{{ item.entity_key }}</td><td>{{ item.severity|upper }}</td><td>{{ item.reason }} · {{ 'Acknowledged' if item.acknowledged_at else 'Unacknowledged' }}</td>{% endif %}
+</tr>{% else %}<tr><td colspan="4" class="empty">No matches. Try clearing or changing the filters.</td></tr>{% endfor %}</tbody></table></div>
+<div class="pagination">{% if result.page>1 %}<a href="{{ url_for('dashboard.investigation_page', kind=result.kind, q=result.query, state=result.state, page=result.page-1) }}">Previous</a>{% endif %}<span>Page {{ result.page }}</span>{% if result.has_next %}<a href="{{ url_for('dashboard.investigation_page', kind=result.kind, q=result.query, state=result.state, page=result.page+1) }}">Next</a>{% endif %}</div></section>
+{% endblock %}

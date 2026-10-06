@@ -23,7 +23,7 @@ def test_migration_is_repeatable_and_preserves_data(app):
         assert check_password_hash(user["password_hash"], PASSWORD)
         migrate()
         assert get_db().execute("SELECT COUNT(*) FROM users").fetchone()[0] == 2
-        assert get_db().execute("SELECT COUNT(*) FROM schema_migrations").fetchone()[0] == 1
+        assert get_db().execute("SELECT COUNT(*) FROM schema_migrations").fetchone()[0] == 3
         with pytest.raises(sqlite3.IntegrityError):
             get_db().execute("UPDATE users SET role = 'owner' WHERE id = ?", (user["id"],))
 

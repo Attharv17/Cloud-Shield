@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Findings · CloudShield{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">ADMINISTRATOR / DETECTION</p><h1>Security findings</h1></div><span class="status"><span class="dot"></span> Rules active</span></div>
+<p class="lead">Suspicious patterns with the evidence and rule configuration behind each finding.</p>
+<div class="metrics">
+  <div><span>Total findings</span><strong>{{ counts.total }}</strong></div>
+  <div><span>Trigger events</span><strong>{{ counts.trigger_events }}</strong></div>
+  <div><span>Events in evidence</span><strong>{{ counts.evidence_events }}</strong></div>
+  <div><span>Rules with findings</span><strong>{{ counts.by_rule|length }}</strong></div>
+</div>
+<section class="panel table-panel">
+  <div class="table-heading"><h2>Recent findings</h2><a href="{{ url_for('main.findings') }}">Refresh findings</a></div>
+  <div class="table-scroll"><table>
+    <thead><tr><th scope="col">Finding</th><th scope="col">Time (UTC)</th><th scope="col">Rule</th><th scope="col">Source IP</th><th scope="col">User</th><th scope="col">Weight</th></tr></thead>
+    <tbody>{% for finding in findings %}<tr>
+      <td><a href="{{ url_for('main.finding_detail', finding_id=finding.id) }}">#{{ finding.id }} · View evidence</a></td>
+      <td>{{ finding.created_at[:19].replace('T', ' ') }}</td>
+      <td><span class="badge warning">{{ finding.rule_id.replace('_', ' ') }}</span></td>
+      <td class="mono">{{ finding.source_ip }}</td><td>{{ finding.username or 'Anonymous' }}</td><td>+{{ finding.weight }}</td>
+    </tr>{% else %}<tr><td colspan="6" class="empty">No findings yet. Ordinary activity should stay quiet.</td></tr>{% endfor %}</tbody>
+  </table></div>
+  <div class="pagination">
+    {% if page > 1 %}<a href="{{ url_for('main.findings', page=page-1) }}">← Newer</a>{% endif %}
+    <span>Page {{ page }}</span>
+    {% if page * 25 < counts.total %}<a href="{{ url_for('main.findings', page=page+1) }}">Older →</a>{% endif %}
+  </div>
+</section>
+<p class="muted">Weights describe individual findings. <a href="{{ url_for('risk_views.dashboard') }}">View combined risk scores, incidents and responses.</a></p>
+{% endblock %}

@@ -17,6 +17,8 @@ def app(tmp_path):
         "DATABASE": str(tmp_path / "test.sqlite3"),
         "SESSION_COOKIE_SECURE": False,
         "ENVIRONMENT": "testing",
+        "DETECTION_RULES_FILE": None,
+        "RISK_POLICY_FILE": None,
     })
     with application.app_context():
         migrate()

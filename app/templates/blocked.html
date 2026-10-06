@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Temporarily blocked · CloudShield{% endblock %}
+{% block content %}
+<section class="error-page"><p class="eyebrow">TEMPORARY RESTRICTION</p><h1>Please try again later.</h1>
+<p class="lead">Access is temporarily blocked. The current restriction expires at <time datetime="{{ expires_at }}">{{ expires_at }}</time> (UTC), when access will be reevaluated.</p></section>
+{% endblock %}

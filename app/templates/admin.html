@@ -26,5 +26,5 @@
     {% if page * 25 < counts.total %}<a href="{{ url_for('main.admin', page=page+1) }}">Older →</a>{% endif %}
   </div>
 </section>
-<p class="muted">Events appear after requests finish. Detection rules and risk scores are planned for the next build stages.</p>
+<p class="muted">Events appear after requests finish. <a href="{{ url_for('main.findings') }}">View security findings</a> to inspect detected patterns and supporting evidence.</p>
 {% endblock %}

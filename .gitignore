@@ -31,6 +31,8 @@ instance/
 
 # Test and tool output
 .pytest_cache/
+.test-runs/
+.pytest-tmp/
 .coverage
 .coverage.*
 htmlcov/

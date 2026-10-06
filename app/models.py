@@ -41,15 +41,24 @@ def create_user(username, password, role="user"):
 
 
 def save_event(event):
+    from .detection import evaluate_event
+
     connection = get_db()
     with connection:
+        connection.execute("BEGIN IMMEDIATE")
         connection.execute(
             "INSERT INTO events (request_id, timestamp, event_type, source_ip, user_id, "
-            "route, method, status, metadata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "route, method, status, metadata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) "
+            "ON CONFLICT(request_id) DO NOTHING",
             (event["request_id"], event["timestamp"], event["event_type"],
              event["source_ip"], event["user_id"], event["route"], event["method"],
              event["status"], json.dumps(event["metadata"], sort_keys=True)),
         )
+        event_id = connection.execute(
+            "SELECT id FROM events WHERE request_id = ?", (event["request_id"],)
+        ).fetchone()[0]
+        evaluate_event(connection, event_id)
+    return event_id
 
 
 def recent_events(page=1, per_page=25):

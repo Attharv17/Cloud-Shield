@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{{ url_for('risk_views.dashboard') }}">← Risk & incidents</a><p class="eyebrow detail-eyebrow">ENTITY #{{ entity.id }}</p>
+<h1>{{ entity.entity_type }}: {{ entity.entity_key }}</h1><p class="lead">{{ entity.score }}/100 · {{ entity.severity|upper }} · {{ entity.recommendation }}</p>
+<section class="panel table-panel"><div class="table-heading"><h2>Score audit trail</h2></div><div class="table-scroll"><table><thead><tr><th>Time (UTC)</th><th>Reason</th><th>Requested</th><th>Applied</th><th>Score</th><th>Evidence</th></tr></thead><tbody>
+{% for change in entity.changes %}<tr><td>{{ change.created_at[:19].replace('T', ' ') }}</td><td>{{ change.reason }}</td><td>{{ change.requested_delta }}</td><td>{{ change.applied_delta }}</td><td>{{ change.before_score }} → {{ change.after_score }}</td><td>{% if change.finding_id %}<a href="{{ url_for('main.finding_detail', finding_id=change.finding_id) }}">Finding #{{ change.finding_id }}</a>{% else %}{{ change.kind }}{% endif %}</td></tr>{% else %}<tr><td colspan="6">No score changes.</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="panel table-panel"><div class="table-heading"><h2>Temporary blocks</h2></div><div class="table-scroll"><table><thead><tr><th>ID</th><th>Status</th><th>Expires (UTC)</th><th>Reason</th></tr></thead><tbody>{% for action in entity.actions %}<tr><td>{{ action.id }}</td><td>{{ action.status }}</td><td>{{ action.expires_at }}</td><td>{{ action.reason }}</td></tr>{% else %}<tr><td colspan="4">No block actions.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

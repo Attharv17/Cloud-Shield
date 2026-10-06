@@ -1,0 +1,25 @@
+[Unit]
+Description=CloudShield risk maintenance
+After=cloudshield-migrate.service
+Requires=cloudshield-migrate.service
+
+[Service]
+Type=simple
+User=cloudshield
+Group=cloudshield
+WorkingDirectory=/opt/cloudshield
+EnvironmentFile=/etc/cloudshield.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/cloudshield/.venv/bin/python -m flask --app app risk-worker --interval 10
+Restart=on-failure
+RestartSec=5
+StateDirectory=cloudshield
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/cloudshield
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{{ url_for('risk_views.dashboard') }}">← Risk & incidents</a><p class="eyebrow detail-eyebrow">INCIDENT CS-{{ incident.id }} / {{ incident.status|upper }}</p>
+<h1>{{ incident.source_ip }}</h1><p class="lead">Peak {{ incident.peak_score }}/100 · Current {{ incident.current_score }}/100</p>
+<p>Opened {{ incident.opened_at }}. Last suspicious finding {{ incident.last_activity }}.{% if incident.closed_at %} Closed {{ incident.closed_at }}.{% endif %}</p>
+<p>{% for entity in incident.entities %}<a href="{{ url_for('risk_views.entity_page', entity_id=entity.id) }}">{{ entity.entity_type }}: {{ entity.entity_key }} ({{ entity.score }})</a>{{ ' · ' if not loop.last }}{% endfor %}</p>
+<section class="panel table-panel"><div class="table-heading"><h2>Incident timeline</h2></div><div class="table-scroll"><table><thead><tr><th>Time (UTC)</th><th>Type</th><th>Activity</th></tr></thead><tbody>{% for item in incident.timeline %}<tr><td>{{ item.time[:19].replace('T', ' ') }}</td><td>{{ item.kind }}</td><td>{{ item.description }}</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

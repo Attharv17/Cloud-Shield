@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Finding #{{ finding.id }} · CloudShield{% endblock %}
+{% block content %}
+<a href="{{ url_for('main.findings') }}">← All findings</a>
+<p class="eyebrow detail-eyebrow">FINDING #{{ finding.id }} / {{ finding.rule_id.replace('_', ' ').upper() }}</p>
+<h1>{{ finding.reason }}</h1>
+<p class="lead">Source {{ finding.source_ip }} · {{ finding.username or 'Anonymous' }} · Rule weight +{{ finding.weight }}</p>
+<section class="panel workspace-panel">
+  <h2>Detection details</h2>
+  <dl class="details">
+    <dt>Entity</dt><dd>{{ finding.entity_type }}: {{ finding.entity_key }}</dd>
+    <dt>Evaluated at (UTC)</dt><dd>{{ finding.created_at }}</dd>
+    <dt>Processing window (UTC)</dt><dd>{{ finding.window_start }} to {{ finding.window_end }}</dd>
+    <dt>Supporting events</dt><dd>{{ finding.observed_count }}</dd>
+    <dt>Configuration version</dt><dd class="mono">{{ finding.config_version }}</dd>
+  </dl>
+  <details><summary>Rule configuration used for this finding</summary><pre>{{ finding.configuration[finding.rule_id]|tojson(indent=2) }}</pre></details>
+</section>
+<section class="panel table-panel evidence-panel">
+  <div class="table-heading"><h2>Supporting events</h2></div>
+  <div class="table-scroll"><table>
+    <thead><tr><th scope="col">Event ID</th><th scope="col">Time (UTC)</th><th scope="col">Type</th><th scope="col">Route</th><th scope="col">Status</th></tr></thead>
+    <tbody>{% for event in finding.evidence %}<tr><td>{{ event.id }}</td><td>{{ event.timestamp[:19].replace('T', ' ') }}</td><td>{{ event.event_type.replace('_', ' ') }}</td><td class="mono">{{ event.method }} {{ event.route }}</td><td>{{ event.status }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+{% endblock %}

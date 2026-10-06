@@ -20,4 +20,6 @@ def configuration(instance_path):
         ).lower() == "true",
         "PERMANENT_SESSION_LIFETIME": timedelta(hours=1),
         "MAX_CONTENT_LENGTH": 16 * 1024,
+        "DETECTION_RULES_FILE": os.getenv("CLOUDSHIELD_RULES_FILE"),
+        "RISK_POLICY_FILE": os.getenv("CLOUDSHIELD_RISK_POLICY_FILE"),
     }

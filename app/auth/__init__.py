@@ -17,6 +17,9 @@ _DUMMY_HASH = generate_password_hash(secrets.token_urlsafe(32))
 
 
 def load_user():
+    if request.endpoint in {"main.health", "main.ready"}:
+        g.user = None
+        return
     user_id = session.get("user_id")
     g.user = get_user(user_id) if isinstance(user_id, int) else None
 
@@ -26,6 +29,7 @@ def login_required(view):
     def wrapped(*args, **kwargs):
         if g.user is None:
             g.event_type = "access_denied"
+            g.restricted_access = request.endpoint not in {"main.home", "auth.logout"}
             if request.path.startswith("/api/"):
                 abort(401)
             return redirect(url_for("auth.login"))
@@ -39,6 +43,7 @@ def admin_required(view):
     def wrapped(*args, **kwargs):
         if g.user["role"] != "admin":
             g.event_type = "access_denied"
+            g.restricted_access = True
             abort(403)
         return view(*args, **kwargs)
     return wrapped

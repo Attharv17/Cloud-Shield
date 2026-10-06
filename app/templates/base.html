@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -12,7 +12,7 @@
     <nav aria-label="Main navigation">
       {% if g.user %}
       <a href="{{ url_for('main.home') }}">Workspace</a>
-      {% if g.user.role == 'admin' %}<a href="{{ url_for('main.admin') }}">Event log</a>{% endif %}
+      {% if g.user.role == 'admin' %}<a href="{{ url_for('dashboard.overview') }}">Overview</a><a href="/admin/investigate">Investigate</a><a href="{{ url_for('risk_views.dashboard') }}">Risk & incidents</a><a href="{{ url_for('dashboard.settings_page') }}">Settings</a>{% endif %}
       <span class="identity">{{ g.user.username }} · {{ g.user.role }}</span>
       <form action="{{ url_for('auth.logout') }}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -23,5 +23,6 @@
   </header>
   <main>{% block content %}{% endblock %}</main>
   <footer>CloudShield <span>Adaptive cloud threat detection</span></footer>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,22 @@
+{
+  "failed_login_burst": {
+    "threshold": 5,
+    "window_seconds": 60,
+    "cooldown_seconds": 60,
+    "weight": 20
+  },
+  "high_request_frequency": {
+    "threshold": 100,
+    "window_seconds": 60,
+    "cooldown_seconds": 60,
+    "weight": 15
+  },
+  "restricted_access": {
+    "cooldown_seconds": 60,
+    "weight": 25
+  },
+  "new_source_context": {
+    "weight": 10
+  }
+}
+

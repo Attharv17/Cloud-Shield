@@ -23,14 +23,21 @@ def create_app(test_config=None):
         raise RuntimeError("Production requires secure session cookies and HTTPS.")
     Path(app.instance_path).mkdir(parents=True, exist_ok=True)
 
-    from . import auth, collection, db, routes
+    from . import auth, collection, dashboard, db, detection, risk, routes
 
     db.init_app(app)
     collection.init_app(app)
     auth.init_app(app)
+    detection.init_app(app)
+    risk.init_app(app)
     csrf.init_app(app)
     app.register_blueprint(routes.bp)
     app.register_blueprint(routes.api)
+    app.register_blueprint(dashboard.bp)
+    from scripts.demo_traffic import demo_traffic_command
+    app.cli.add_command(demo_traffic_command)
+    from scripts.backup import backup_command
+    app.cli.add_command(backup_command)
 
     @app.errorhandler(CSRFError)
     def csrf_error(_error):

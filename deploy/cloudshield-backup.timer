@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily CloudShield database snapshot
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+Unit=cloudshield-backup.service
+
+[Install]
+WantedBy=timers.target
