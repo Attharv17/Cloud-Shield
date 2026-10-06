@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<p class="eyebrow">APPLICATION WORKSPACE</p>
+<h1>Welcome, {{ g.user.username }}.</h1>
+<p class="lead">Your session is active. Application requests and authentication events are being recorded.</p>
+<section class="panel workspace-panel">
+  <span class="status"><span class="dot"></span> Signed in as {{ g.user.role }}</span>
+  <h2>Explore the demo application</h2>
+  <p>Refresh this page to generate an application event. The event log is available to administrators.</p>
+  <div class="actions">
+    <a class="button primary" href="{{ url_for('main.home') }}">Generate a page request</a>
+    <a class="button secondary" href="{{ url_for('main.admin') }}">Open administrator area</a>
+  </div>
+</section>
+{% endblock %}

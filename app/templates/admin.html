@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Event log · CloudShield{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">ADMINISTRATOR / ACTIVITY</p><h1>Event log</h1></div><span class="status"><span class="dot"></span> Collection active</span></div>
+<p class="lead">Authentication outcomes and application activity, in one auditable record.</p>
+<div class="metrics">
+  <div><span>Total events</span><strong>{{ counts.total }}</strong></div>
+  <div><span>Successful logins</span><strong>{{ counts.by_type.get('login_success', 0) }}</strong></div>
+  <div><span>Failed logins</span><strong>{{ counts.by_type.get('login_failed', 0) }}</strong></div>
+  <div><span>Access denials</span><strong>{{ counts.by_type.get('access_denied', 0) }}</strong></div>
+</div>
+<section class="panel table-panel">
+  <div class="table-heading"><h2>Recent activity</h2><a href="{{ url_for('main.admin') }}">Refresh events</a></div>
+  <div class="table-scroll"><table>
+    <thead><tr><th scope="col">Time (UTC)</th><th scope="col">Event</th><th scope="col">Source IP</th><th scope="col">User</th><th scope="col">Route</th><th scope="col">Status</th></tr></thead>
+    <tbody>{% for event in events %}<tr>
+      <td><time datetime="{{ event.timestamp }}">{{ event.timestamp[:19].replace('T', ' ') }}</time></td>
+      <td><span class="badge {{ 'warning' if event.event_type in ['login_failed', 'access_denied', 'csrf_rejected'] else '' }}">{{ event.event_type.replace('_', ' ') }}</span></td>
+      <td class="mono">{{ event.source_ip }}</td><td>{{ event.username or 'Anonymous' }}</td>
+      <td class="mono">{{ event.method }} {{ event.route }}</td><td>{{ event.status }}</td>
+    </tr>{% else %}<tr><td colspan="6" class="empty">No events yet. Sign in or visit an application page to begin.</td></tr>{% endfor %}</tbody>
+  </table></div>
+  <div class="pagination">
+    {% if page > 1 %}<a href="{{ url_for('main.admin', page=page-1) }}">← Newer</a>{% endif %}
+    <span>Page {{ page }}</span>
+    {% if page * 25 < counts.total %}<a href="{{ url_for('main.admin', page=page+1) }}">Older →</a>{% endif %}
+  </div>
+</section>
+<p class="muted">Events appear after requests finish. Detection rules and risk scores are planned for the next build stages.</p>
+{% endblock %}

@@ -1,0 +1,56 @@
+:root { color-scheme: dark; --bg:#0b1220; --panel:#111d30; --line:#29374b; --text:#eef4ff; --muted:#a5b5ca; --accent:#72e3bf; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font:15px/1.6 system-ui, sans-serif; }
+a { color:var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+.site-header { min-height:86px; padding:20px 5vw; display:flex; align-items:center; justify-content:space-between; gap:24px; border-bottom:1px solid var(--line); }
+.brand { display:flex; align-items:center; gap:12px; color:var(--text); font-size:21px; font-weight:750; letter-spacing:-.6px; }
+.brand-mark { background:var(--accent); color:#102323; border-radius:10px; padding:5px 9px; font-size:16px; }
+nav { display:flex; align-items:center; flex-wrap:wrap; gap:24px; }
+nav form { margin:0; }
+.identity, .muted { color:var(--muted); font-size:14px; }
+main { max-width:1320px; margin:auto; padding:54px 5vw 76px; min-height:calc(100vh - 165px); }
+h1 { font-size:clamp(32px,4vw,56px); line-height:1.13; letter-spacing:-2px; margin:16px 0 22px; font-weight:700; }
+h1 span { color:var(--accent); }
+h2 { font-size:23px; letter-spacing:-.5px; margin:10px 0; }
+p { margin:0 0 20px; }
+.eyebrow { font-size:11px; font-weight:750; letter-spacing:2px; color:var(--accent); }
+.lead { color:var(--muted); font-size:18px; max-width:710px; }
+.login-layout { display:grid; grid-template-columns:1.25fr 1fr; align-items:center; gap:7vw; padding:40px 0; }
+.intro .lead { margin:28px 0; }
+.panel { background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+.login-panel { padding:34px; }
+label { display:block; font-weight:600; margin:18px 0 8px; }
+input { width:100%; border:1px solid #43526a; background:#0a1526; border-radius:7px; padding:12px; font:inherit; color:var(--text); }
+:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+.button { display:inline-flex; align-items:center; justify-content:center; gap:15px; border-radius:7px; padding:11px 18px; font:600 14px/1.4 system-ui,sans-serif; cursor:pointer; text-decoration:none; }
+.button:hover { text-decoration:none; filter:brightness(1.1); }
+.primary { background:var(--accent); color:#0b2923; border:1px solid var(--accent); }
+.secondary { border:1px solid #43526a; background:transparent; color:var(--text); }
+.login-panel .button { width:100%; margin-top:26px; justify-content:space-between; }
+.error { color:#ffd4ba; background:#462820; border-radius:7px; padding:12px; }
+.status { display:inline-flex; align-items:center; gap:9px; font-size:13px; color:var(--muted); }
+.dot { background:var(--accent); width:7px; height:7px; border-radius:50%; }
+.workspace-panel { padding:30px; margin-top:35px; }
+.workspace-panel h2 { margin-top:20px; }
+.actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+.page-heading { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.page-heading h1 { font-size:40px; }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); margin:35px 0; border-block:1px solid var(--line); padding:24px 0; gap:20px; }
+.metrics span { display:block; color:var(--muted); font-size:13px; }
+.metrics strong { font-size:34px; font-weight:600; }
+.table-panel { overflow:hidden; margin-bottom:20px; }
+.table-heading { display:flex; align-items:center; justify-content:space-between; padding:16px 22px; gap:20px; }
+.table-heading h2 { font-size:18px; }
+.table-scroll { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; text-align:left; white-space:nowrap; font-size:12px; }
+th { background:#152237; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.7px; }
+th, td { padding:14px 18px; border-bottom:1px solid var(--line); }
+.mono { font-family:ui-monospace,Consolas,monospace; }
+.badge { background:#193932; color:#a2e8d2; padding:5px 8px; border-radius:5px; }
+.badge.warning { color:#ffd4aa; background:#493425; }
+.empty { text-align:center; padding:40px; color:var(--muted); }
+.pagination { display:flex; justify-content:flex-end; gap:24px; padding:16px 22px; color:var(--muted); }
+.error-page { padding-top:50px; }
+footer { display:flex; justify-content:space-between; padding:22px 5vw; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+@media(max-width:850px) { .login-layout { grid-template-columns:1fr; gap:35px; padding:0; } .site-header { flex-wrap:wrap; } nav { gap:14px; } .metrics { grid-template-columns:repeat(2,1fr); } .page-heading { align-items:flex-start; flex-direction:column; } .login-panel { padding:24px; } footer { gap:20px; } }

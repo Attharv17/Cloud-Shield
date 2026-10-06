@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}CloudShield{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('main.home') }}"><span class="brand-mark">CS</span> CloudShield</a>
+    <nav aria-label="Main navigation">
+      {% if g.user %}
+      <a href="{{ url_for('main.home') }}">Workspace</a>
+      {% if g.user.role == 'admin' %}<a href="{{ url_for('main.admin') }}">Event log</a>{% endif %}
+      <span class="identity">{{ g.user.username }} · {{ g.user.role }}</span>
+      <form action="{{ url_for('auth.logout') }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="button secondary" type="submit">Sign out</button>
+      </form>
+      {% else %}<a href="{{ url_for('auth.login') }}">Sign in</a>{% endif %}
+    </nav>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer>CloudShield <span>Adaptive cloud threat detection</span></footer>
+</body>
+</html>
