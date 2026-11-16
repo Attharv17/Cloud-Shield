@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1330" viewBox="0 0 1800 1330" role="img" aria-labelledby="title desc">
+<title id="title">CloudShield solution architecture</title>
+<desc id="desc">HTTPS clients reach Nginx, Waitress and a Flask application. Completed requests pass through collection, detection, scoring and response logic in one transaction. SQLite is shared by the web application, a separate maintenance worker and administrator queries. EC2 is the deployment target.</desc>
+<rect width="1800" height="1330" fill="#f6f8fc"/>
+<text x="65" y="35" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">CloudShield</text>
+<text x="330" y="48" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Solution architecture</text>
+<text x="65" y="96" font-family="Segoe UI, Arial, sans-serif" font-size="23" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Application telemetry → explainable risk → adaptive response</text>
+<rect x="75" y="160" width="330" height="110" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="97" y="177" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">CLIENT</text>
+<text x="97" y="205" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Users / demo browser</text>
+<text x="97" y="245" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Login, requests, access attempts</text>
+<rect x="1270" y="160" width="450" height="110" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="1292" y="177" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">ADMINISTRATOR</text>
+<text x="1292" y="205" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Admin browser</text>
+<text x="1292" y="245" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">HTML + JavaScript + Chart.js</text>
+<rect x="45" y="320" width="1710" height="865" rx="22" fill="#eef3fb" stroke="#b7c7dd" stroke-width="2" stroke-dasharray="9 7"/>
+<text x="285" y="337" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" fill="#526580" dominant-baseline="text-before-edge">SINGLE EC2 HOST · DEPLOYMENT TARGET</text>
+<text x="1270" y="337" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">systemd supervises web + worker</text>
+<polyline points="240,270 240,390" fill="none" stroke="#356ee6" stroke-width="3"/>
+<polygon points="240,390 246.0,378.0 234.0,378.0" fill="#356ee6"/>
+<polyline points="1495,270 1495,297 240,297" fill="none" stroke="#356ee6" stroke-width="3"/>
+<text x="710" y="270" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="400" fill="#356ee6" dominant-baseline="text-before-edge">HTTPS requests / responses</text>
+<rect x="75" y="390" width="320" height="145" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="97" y="407" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">EDGE</text>
+<text x="97" y="435" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Nginx</text>
+<text x="97" y="475" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">TLS termination</text>
+<text x="97" y="503" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Trusted proxy headers</text>
+<rect x="450" y="390" width="305" height="145" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="472" y="407" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">WSGI SERVER</text>
+<text x="472" y="435" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Waitress</text>
+<text x="472" y="475" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Loopback 127.0.0.1:8000</text>
+<text x="472" y="503" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Runs the Flask application</text>
+<rect x="810" y="390" width="445" height="145" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="832" y="407" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">FLASK · BEFORE REQUEST</text>
+<text x="832" y="435" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Authentication + enforcement</text>
+<text x="832" y="475" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Session user + current IP / user blocks</text>
+<text x="832" y="503" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Catch-up maintenance; blocked → 429</text>
+<rect x="1310" y="390" width="410" height="145" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="1332" y="407" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">FLASK · ROUTES</text>
+<text x="1332" y="435" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Application + admin APIs</text>
+<text x="1332" y="475" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Role checks + CSRF protection</text>
+<text x="1332" y="503" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Workspace, login, dashboard, JSON</text>
+<polyline points="395,462 450,462" fill="none" stroke="#356ee6" stroke-width="3"/>
+<polygon points="450,462 438.0,456.0 438.0,468.0" fill="#356ee6"/>
+<polyline points="755,462 810,462" fill="none" stroke="#356ee6" stroke-width="3"/>
+<polygon points="810,462 798.0,456.0 798.0,468.0" fill="#356ee6"/>
+<polyline points="1255,462 1310,462" fill="none" stroke="#356ee6" stroke-width="3"/>
+<polygon points="1310,462 1298.0,456.0 1298.0,468.0" fill="#356ee6"/>
+<text x="550" y="548" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="400" fill="#356ee6" dominant-baseline="text-before-edge">after_request · capture the completed response</text>
+<rect x="65" y="617" width="1665" height="310" rx="18" fill="#fff" stroke="#c7d7ed" stroke-width="2"/>
+<polyline points="1515,535 1515,580 247,580 247,670" fill="none" stroke="#356ee6" stroke-width="3"/>
+<polygon points="247,670 253.0,658.0 241.0,658.0" fill="#356ee6"/>
+<text x="475" y="628" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">FLASK TELEMETRY PIPELINE · ONE ATOMIC SQLITE TRANSACTION</text>
+<rect x="85" y="670" width="335" height="185" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="107" y="687" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">01 · COLLECTION</text>
+<text x="107" y="715" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Normalize + log</text>
+<text x="107" y="755" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Request ID, UTC time, IP / user</text>
+<text x="107" y="783" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Route, status, outcome</text>
+<text x="107" y="811" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Allowlisted metadata only</text>
+<rect x="470" y="670" width="335" height="185" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="492" y="687" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">02 · DETECTION</text>
+<text x="492" y="715" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Evaluate four rules</text>
+<text x="492" y="755" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Failed logins; rapid requests</text>
+<text x="492" y="783" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Restricted access; new context</text>
+<text x="492" y="811" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Windows, cooldowns, evidence</text>
+<rect x="855" y="670" width="350" height="185" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="877" y="687" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">03 · RISK SCORING</text>
+<text x="877" y="715" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Explainable risk 0–100</text>
+<text x="877" y="755" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Separate IP + verified-user scores</text>
+<text x="877" y="783" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Finding weights + quiet reductions</text>
+<text x="877" y="811" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Effective risk = higher score</text>
+<rect x="1255" y="670" width="455" height="185" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="1277" y="687" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65e16" dominant-baseline="text-before-edge">04 · INCIDENTS + RESPONSE</text>
+<text x="1277" y="715" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Decide + record actions</text>
+<text x="1277" y="755" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Group evidence into IP incident timelines</text>
+<text x="1277" y="783" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Monitor / alert / temporary block</text>
+<text x="1277" y="811" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Five-minute block on subsequent requests</text>
+<polyline points="420,762 470,762" fill="none" stroke="#356ee6" stroke-width="3"/>
+<polygon points="470,762 458.0,756.0 458.0,768.0" fill="#356ee6"/>
+<polyline points="805,762 855,762" fill="none" stroke="#356ee6" stroke-width="3"/>
+<polygon points="855,762 843.0,756.0 843.0,768.0" fill="#356ee6"/>
+<polyline points="1205,762 1255,762" fill="none" stroke="#356ee6" stroke-width="3"/>
+<polygon points="1255,762 1243.0,756.0 1243.0,768.0" fill="#356ee6"/>
+<text x="87" y="881" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Events, findings, source history, scores and response records commit together. Blocked requests are logged without increasing risk.</text>
+<polyline points="637,927 637,1007" fill="none" stroke="#128479" stroke-width="3"/>
+<polygon points="637,1007 643.0,995.0 631.0,995.0" fill="#128479"/>
+<polyline points="1030,927 1030,1007" fill="none" stroke="#128479" stroke-width="3"/>
+<polygon points="1030,1007 1036.0,995.0 1024.0,995.0" fill="#128479"/>
+<polyline points="1482,927 1482,959 1150,959 1150,1007" fill="none" stroke="#128479" stroke-width="3"/>
+<polygon points="1150,1007 1156.0,995.0 1144.0,995.0" fill="#128479"/>
+<text x="690" y="960" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="400" fill="#128479" dominant-baseline="text-before-edge">Read + persist evidence and state</text>
+<rect x="85" y="1007" width="335" height="145" rx="16" fill="#effaf7" stroke="#d9e2ef" stroke-width="2"/>
+<text x="107" y="1024" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#128479" dominant-baseline="text-before-edge">SEPARATE PROCESS · EVERY 10S</text>
+<text x="107" y="1052" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Risk maintenance worker</text>
+<text x="107" y="1092" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Quiet decay; incident closure</text>
+<text x="107" y="1120" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Block expiry / renewal</text>
+<rect x="475" y="1007" width="730" height="145" rx="16" fill="#effaf7" stroke="#d9e2ef" stroke-width="2"/>
+<text x="497" y="1024" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#128479" dominant-baseline="text-before-edge">SHARED PERSISTENT STORE</text>
+<text x="497" y="1052" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">SQLite database</text>
+<text x="497" y="1092" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Users · events · findings · source history · versioned configuration</text>
+<text x="497" y="1120" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Risk ledger · incidents · alerts · blocks · action audits</text>
+<rect x="1255" y="1007" width="455" height="145" rx="16" fill="#fff" stroke="#d9e2ef" stroke-width="2"/>
+<text x="1277" y="1024" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">ADMIN-ONLY DASHBOARD + JSON APIS</text>
+<text x="1277" y="1052" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" fill="#182b49" dominant-baseline="text-before-edge">Investigate + acknowledge</text>
+<text x="1277" y="1092" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Risk charts, evidence and incident timelines</text>
+<text x="1277" y="1120" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Browser polls /api/dashboard every 5s</text>
+<polyline points="420,1080 475,1080" fill="none" stroke="#128479" stroke-width="3"/>
+<polygon points="475,1080 463.0,1074.0 463.0,1086.0" fill="#128479"/>
+<polyline points="1205,1080 1255,1080" fill="none" stroke="#128479" stroke-width="3"/>
+<polygon points="1255,1080 1243.0,1074.0 1243.0,1086.0" fill="#128479"/>
+<text x="75" y="1200" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#356ee6" dominant-baseline="text-before-edge">POLICY</text>
+<text x="75" y="1226" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Versioned rules.json + policy.json</text>
+<text x="610" y="1200" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#128479" dominant-baseline="text-before-edge">OPERATIONS</text>
+<text x="610" y="1226" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Daily database backups · audited recovery CLI</text>
+<text x="1245" y="1200" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#b65e16" dominant-baseline="text-before-edge">DEFAULT RESPONSE LEVELS</text>
+<text x="1245" y="1226" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">0–24 allow · 25–49 monitor</text>
+<text x="1245" y="1254" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">50–74 alert · 75–100 alert + block</text>
+<text x="75" y="1289" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="400" fill="#526580" dominant-baseline="text-before-edge">Scope: application-level protection. CAPTCHA is recommended; email, WAF/IAM, ML and multi-cloud integrations are future work.</text>
+</svg>

@@ -9,9 +9,35 @@ api = Blueprint("api", __name__, url_prefix="/api")
 
 
 @bp.get("/")
-@login_required
 def home():
+    from pathlib import Path
+    from flask import send_file
+    root_index = Path(current_app.root_path).parent / "index.html"
+    if root_index.exists():
+        return send_file(root_index)
     return render_template("home.html")
+
+
+@bp.get("/dashboard")
+def dashboard_home():
+    from flask import redirect
+    return redirect("/")
+
+
+@bp.get("/css/<path:filename>")
+def serve_css(filename):
+    from pathlib import Path
+    from flask import send_from_directory
+    css_dir = Path(current_app.root_path).parent / "css"
+    return send_from_directory(css_dir, filename)
+
+
+@bp.get("/js/<path:filename>")
+def serve_js(filename):
+    from pathlib import Path
+    from flask import send_from_directory
+    js_dir = Path(current_app.root_path).parent / "js"
+    return send_from_directory(js_dir, filename)
 
 
 @bp.get("/admin")

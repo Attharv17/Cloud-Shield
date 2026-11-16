@@ -1,6 +1,32 @@
-# CloudShield
+# CloudShield: Adaptive Cloud Threat Detection & Risk Scoring
+
+> **College Project Prototype & Viva Demonstration Version**  
+> A clean, simplified, and explainable cloud threat detection system designed for straightforward viva demonstration and academic evaluation.  
+> 📖 **Read the Full Viva & Presentation Guide:** [`PROJECT_PRESENTATION.md`](PROJECT_PRESENTATION.md)
+
+---
+
+## 🚀 Quickstart: Launch the Simplified Website
+
+You can launch and demonstrate the simplified prototype in **under 5 seconds**:
+
+### Option 1: 1-Click Python Server (Recommended)
+```bash
+python run.py
+```
+*Starts local server at `http://127.0.0.1:8000/` and automatically opens your browser.*
+
+### Option 2: 100% Offline (Direct Double-Click)
+Double-click [`index.html`](index.html) in Windows File Explorer.  
+*Runs directly in Chrome, Edge, Firefox, or Safari with zero dependencies and no server needed.*
+
+---
+
+## Stage 4 Advanced Architecture (Reference)
 
 Adaptive cloud threat detection and explainable risk scoring, built in four stages. See [project.md](project.md) for the full specification.
+
+See the [solution architecture diagram](docs/architecture.md) for the request flow, detection and scoring pipeline, persistence, dashboard, maintenance worker, and deployment target. [PNG](docs/architecture.png) · [SVG](docs/architecture.svg).
 
 ## Current build: Stage 4 — Dashboard and demonstration — Risk, incidents and responses
 
